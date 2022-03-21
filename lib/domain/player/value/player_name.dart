@@ -2,18 +2,18 @@ import 'package:meta/meta.dart';
 import 'package:sample_flutter_game_with_flame/common/exception.dart';
 
 @immutable
-class BlockColor {
+class PlayerName {
   final String value;
 
-  BlockColor(this.value) {
+  PlayerName(this.value) {
     if (value.isEmpty) {
-      throw NullEmptyException(code: ExceptionCode.block);
+      throw NullEmptyException(code: ExceptionCode.player);
     }
   }
 
   @override
   bool operator ==(Object other) =>
-      identical(other, this) || (other is BlockColor && other.value == value);
+      identical(other, this) || (other is PlayerName && other.value == value);
 
   @override
   int get hashCode => runtimeType.hashCode ^ value.hashCode;
