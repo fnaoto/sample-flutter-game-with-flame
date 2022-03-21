@@ -25,7 +25,7 @@ class BlockAppService {
 
   Future<void> createBlock({
     required int point,
-    required Color color,
+    required int color,
   }) async {
     final _block = _factory.create(
       point: BlockPoint(point),

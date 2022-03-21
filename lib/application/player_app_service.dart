@@ -5,6 +5,7 @@ import 'package:sample_flutter_game_with_flame/domain/player/player_factory.dart
 import 'package:sample_flutter_game_with_flame/domain/player/player_repository.dart';
 import 'package:sample_flutter_game_with_flame/domain/player/player_service.dart';
 import 'package:sample_flutter_game_with_flame/domain/player/value/player_id.dart';
+import 'package:sample_flutter_game_with_flame/domain/player/value/player_name.dart';
 import 'package:sample_flutter_game_with_flame/domain/player/value/player_point.dart';
 
 @immutable
@@ -21,10 +22,11 @@ class PlayerAppService {
         _service = PlayerService(repository: repository);
 
   Future<void> createPlayer({
-    required int point,
     required String name,
+    required int point,
   }) async {
     final _player = _factory.create(
+      name: PlayerName(name),
       point: PlayerPoint(point),
     );
 

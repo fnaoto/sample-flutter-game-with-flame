@@ -5,10 +5,10 @@ import 'package:sample_flutter_game_with_flame/common/exception.dart';
 
 @immutable
 class BlockColor {
-  final Color value;
+  final int value;
 
   BlockColor(this.value) {
-    if (value.value.isNaN) {
+    if (value.isNaN) {
       throw NullEmptyException(code: ExceptionCode.block);
     }
   }
