@@ -5,7 +5,8 @@ import 'package:sample_flutter_game_with_flame/domain/block/value/block_point.da
 
 abstract class BlockRepository {
   Future<T> transaction<T>(Future<T> Function() f);
-  Future<void> delete(Block block);
+  Future<void> remove(Block block);
+  Future<void> save(Block block);
   Future<Block?> findById(BlockId id);
   Future<Block?> findByPoint(BlockPoint point);
   Future<Block?> findByColor(BlockColor color);

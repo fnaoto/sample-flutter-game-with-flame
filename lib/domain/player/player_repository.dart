@@ -4,7 +4,8 @@ import 'package:sample_flutter_game_with_flame/domain/player/value/player_name.d
 
 abstract class PlayerRepository {
   Future<T> transaction<T>(Future<T> Function() f);
-  Future<void> delete(Player player);
+  Future<void> remove(Player player);
+  Future<void> save(Player player);
   Future<Player?> findById(PlayerId id);
   Future<Player?> findByName(PlayerName name);
 }

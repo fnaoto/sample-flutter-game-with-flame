@@ -23,3 +23,17 @@ class NullEmptyException extends BaseException {
   })  : assert(code != null),
         super(code: code!);
 }
+
+class DuplicatedException extends BaseException {
+  DuplicatedException({
+    required ExceptionCode? code,
+  })  : assert(code != null),
+        super(code: code!);
+}
+
+class NotFoundException extends BaseException {
+  NotFoundException({
+    required ExceptionCode? code,
+  })  : assert(code != null),
+        super(code: code!);
+}

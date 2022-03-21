@@ -1,12 +1,14 @@
+import 'dart:ui';
+
 import 'package:meta/meta.dart';
 import 'package:sample_flutter_game_with_flame/common/exception.dart';
 
 @immutable
 class BlockColor {
-  final String value;
+  final Color value;
 
   BlockColor(this.value) {
-    if (value.isEmpty) {
+    if (value.value.isNaN) {
       throw NullEmptyException(code: ExceptionCode.block);
     }
   }
