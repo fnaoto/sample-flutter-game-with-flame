@@ -2,6 +2,10 @@ import 'package:sample_flutter_game_with_flame/domain/player/value/player_id.dar
 import 'package:sample_flutter_game_with_flame/domain/player/value/player_name.dart';
 import 'package:sample_flutter_game_with_flame/domain/player/value/player_point.dart';
 
+export 'package:sample_flutter_game_with_flame/domain/player/value/player_id.dart';
+export 'package:sample_flutter_game_with_flame/domain/player/value/player_name.dart';
+export 'package:sample_flutter_game_with_flame/domain/player/value/player_point.dart';
+
 class Player {
   final PlayerId id;
   PlayerName _name;

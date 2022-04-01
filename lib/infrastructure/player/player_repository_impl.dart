@@ -1,8 +1,4 @@
-import 'package:sample_flutter_game_with_flame/domain/player/player.dart';
 import 'package:sample_flutter_game_with_flame/domain/player/player_repository.dart';
-import 'package:sample_flutter_game_with_flame/domain/player/value/player_name.dart';
-import 'package:sample_flutter_game_with_flame/domain/player/value/player_id.dart';
-import 'package:sample_flutter_game_with_flame/domain/player/value/player_point.dart';
 import 'package:sample_flutter_game_with_flame/infrastructure/db.dart';
 
 class PlayerRepositoryImpl implements PlayerRepository {
@@ -45,6 +41,15 @@ class PlayerRepositoryImpl implements PlayerRepository {
     );
 
     return list.isEmpty ? null : toPlayer(list[0]);
+  }
+
+  @override
+  Future<List<Player>> findAll() async {
+    final list = await _db.rawQuery(
+      'SELECT * FROM players ORDER BY name',
+    );
+
+    return list.isEmpty ? [] : list.map((data) => toPlayer(data)).toList();
   }
 
   @override

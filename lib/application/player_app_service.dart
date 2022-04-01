@@ -4,9 +4,6 @@ import 'package:sample_flutter_game_with_flame/common/exception.dart';
 import 'package:sample_flutter_game_with_flame/domain/player/player_factory.dart';
 import 'package:sample_flutter_game_with_flame/domain/player/player_repository.dart';
 import 'package:sample_flutter_game_with_flame/domain/player/player_service.dart';
-import 'package:sample_flutter_game_with_flame/domain/player/value/player_id.dart';
-import 'package:sample_flutter_game_with_flame/domain/player/value/player_name.dart';
-import 'package:sample_flutter_game_with_flame/domain/player/value/player_point.dart';
 
 @immutable
 class PlayerAppService {
@@ -57,5 +54,11 @@ class PlayerAppService {
     final target = await _repository.findById(targetId);
 
     return target == null ? null : PlayerDto(target);
+  }
+
+  Future<List<PlayerDto>> getPlayerList() async {
+    final players = await _repository.findAll();
+
+    return players.map((x) => PlayerDto(x)).toList();
   }
 }

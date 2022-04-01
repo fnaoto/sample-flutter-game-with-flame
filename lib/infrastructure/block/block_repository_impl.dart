@@ -1,8 +1,5 @@
-import 'package:sample_flutter_game_with_flame/domain/block/block.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:sample_flutter_game_with_flame/domain/block/block_repository.dart';
-import 'package:sample_flutter_game_with_flame/domain/block/value/block_color.dart';
-import 'package:sample_flutter_game_with_flame/domain/block/value/block_id.dart';
-import 'package:sample_flutter_game_with_flame/domain/block/value/block_point.dart';
 import 'package:sample_flutter_game_with_flame/infrastructure/db.dart';
 
 class BlockRepositoryImpl implements BlockRepository {
@@ -14,17 +11,29 @@ class BlockRepositoryImpl implements BlockRepository {
     final id = data['id'] as String;
     final color = data['color'] as int;
     final point = data['point'] as int;
+    final playerId = data['playerId'] as String;
 
     return Block(
       id: BlockId(id),
       color: BlockColor(color),
       point: BlockPoint(point),
+      playerId: PlayerId(playerId),
     );
   }
 
   @override
   Future<T?> transaction<T>(Future<T> Function() f) async {
     return await _db.transaction<T>(() async => await f());
+  }
+
+  @override
+  Future<List<Block>> findByPlayerId(PlayerId playerId) async {
+    final list = await _db.rawQuery(
+      'SELECT * FROM blocks WHERE playerId = ?',
+      <String>[playerId.value],
+    );
+
+    return list.isEmpty ? [] : list.map((e) => toBlock(e)).toList();
   }
 
   @override
