@@ -1,14 +1,9 @@
-import 'dart:ui';
-
 import 'package:meta/meta.dart';
 import 'package:sample_flutter_game_with_flame/application/dto/block_dto.dart';
 import 'package:sample_flutter_game_with_flame/common/exception.dart';
 import 'package:sample_flutter_game_with_flame/domain/block/block_factory.dart';
 import 'package:sample_flutter_game_with_flame/domain/block/block_repository.dart';
 import 'package:sample_flutter_game_with_flame/domain/block/block_service.dart';
-import 'package:sample_flutter_game_with_flame/domain/block/value/block_color.dart';
-import 'package:sample_flutter_game_with_flame/domain/block/value/block_id.dart';
-import 'package:sample_flutter_game_with_flame/domain/block/value/block_point.dart';
 
 @immutable
 class BlockAppService {
@@ -26,10 +21,12 @@ class BlockAppService {
   Future<void> createBlock({
     required int point,
     required int color,
+    required String playerId,
   }) async {
     final _block = _factory.create(
       point: BlockPoint(point),
       color: BlockColor(color),
+      playerId: PlayerId(playerId),
     );
 
     await _repository.transaction<void>(() async {
@@ -59,5 +56,10 @@ class BlockAppService {
     final target = await _repository.findById(targetId);
 
     return target == null ? null : BlockDto(target);
+  }
+
+  Future<List<BlockDto>> getBlockList(String playerId) async {
+    final _blocks = await _repository.findByPlayerId(PlayerId(playerId));
+    return _blocks.map((e) => BlockDto(e)).toList();
   }
 }

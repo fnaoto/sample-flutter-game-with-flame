@@ -22,3 +22,6 @@ doc/api/
 
 # fvm
 .fvm/flutter_sdk
+
+# Flutter
+.flutter-plugins-dependencies 
