@@ -1,6 +1,12 @@
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample_flutter_game_with_flame/domain/block/block_repository.dart';
 import 'package:sample_flutter_game_with_flame/infrastructure/db.dart';
+
+final blockRepositoryProvider = StateProvider(
+  (ref) => BlockRepositoryImpl(
+    db: ref.watch(dbProvider),
+  ),
+);
 
 class BlockRepositoryImpl implements BlockRepository {
   final DB _db;
@@ -67,10 +73,24 @@ class BlockRepositoryImpl implements BlockRepository {
   }
 
   @override
+  Future<List<Block>> findAll() async {
+    final list = await _db.rawQuery(
+      'SELECT * FROM blocks ORDER BY id',
+    );
+
+    return list.isEmpty ? [] : list.map((data) => toBlock(data)).toList();
+  }
+
+  @override
   Future<void> save(Block block) async {
     await _db.rawInsert(
-      'INSERT OR REPLACE INTO blocks (id, color, point) VALUES (?, ?, ?)',
-      <dynamic>[block.id.value, block.color.value, block.point.value],
+      'INSERT OR REPLACE INTO blocks (id, color, point, playerId) VALUES (?, ?, ?, ?)',
+      <dynamic>[
+        block.id.value,
+        block.color.value,
+        block.point.value,
+        block.playerId.value,
+      ],
     );
   }
 

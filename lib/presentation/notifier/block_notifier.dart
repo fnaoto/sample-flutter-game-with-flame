@@ -1,16 +1,18 @@
-import 'package:riverpod/riverpod.dart';
 import 'package:sample_flutter_game_with_flame/application/block_app_service.dart';
 import 'package:sample_flutter_game_with_flame/application/dto/block_dto.dart';
 
+final blockNotifierStateProvider = StateProvider(
+  (ref) => BlockNotifier(
+    blockAppService: ref.watch(blockAppService),
+  ),
+);
+
 class BlockNotifier extends StateNotifier<int> {
   final BlockAppService _blockAppService;
-  final String _playerId;
 
   BlockNotifier({
     required BlockAppService blockAppService,
-    required String playerId,
   })  : _blockAppService = blockAppService,
-        _playerId = playerId,
         super(0);
 
   List<BlockDto> blockList = [];
@@ -35,6 +37,6 @@ class BlockNotifier extends StateNotifier<int> {
   }
 
   void _updateBlocks() {
-    _blockAppService.getBlockList(_playerId).then((list) => blockList = list);
+    _blockAppService.getBlockList().then((list) => blockList = list);
   }
 }

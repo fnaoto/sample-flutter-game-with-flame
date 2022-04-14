@@ -1,8 +1,11 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 const _dbFile = 'sample_flutter_game_with_flame.db';
 const _dbVersion = 1;
+
+final dbProvider = StateProvider((ref) => DB());
 
 class DB {
   Database? _db;
@@ -21,6 +24,7 @@ class DB {
             id TEXT NOT NULL,
             color INTEGER NOT NULL,
             point INTEGER NOT NULL,
+            playerId TEXT NOT NULL,
             PRIMARY KEY (id)
           )
         ''');
@@ -45,6 +49,7 @@ class DB {
   }
 
   Future<T?> transaction<T>(Future<T> Function() f) async {
+    if (_db == null) throw Exception("db is null");
     return _db?.transaction<T>((txn) async {
       _txn = txn;
       return await f();

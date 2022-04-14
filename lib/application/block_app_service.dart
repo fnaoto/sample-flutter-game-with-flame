@@ -1,9 +1,21 @@
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample_flutter_game_with_flame/application/dto/block_dto.dart';
 import 'package:sample_flutter_game_with_flame/common/exception.dart';
 import 'package:sample_flutter_game_with_flame/domain/block/block_factory.dart';
 import 'package:sample_flutter_game_with_flame/domain/block/block_repository.dart';
 import 'package:sample_flutter_game_with_flame/domain/block/block_service.dart';
+import 'package:sample_flutter_game_with_flame/infrastructure/block/block_factory_impl.dart';
+import 'package:sample_flutter_game_with_flame/infrastructure/block/block_repository_impl.dart';
+
+export 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final blockAppService = StateProvider(
+  (ref) => BlockAppService(
+    repository: ref.watch(blockRepositoryProvider),
+    factory: const BlockFactoryImpl(),
+  ),
+);
 
 @immutable
 class BlockAppService {
@@ -58,8 +70,8 @@ class BlockAppService {
     return target == null ? null : BlockDto(target);
   }
 
-  Future<List<BlockDto>> getBlockList(String playerId) async {
-    final _blocks = await _repository.findByPlayerId(PlayerId(playerId));
+  Future<List<BlockDto>> getBlockList() async {
+    final _blocks = await _repository.findAll();
     return _blocks.map((e) => BlockDto(e)).toList();
   }
 }
