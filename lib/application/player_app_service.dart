@@ -1,9 +1,21 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meta/meta.dart';
 import 'package:sample_flutter_game_with_flame/application/dto/player_dto.dart';
 import 'package:sample_flutter_game_with_flame/common/exception.dart';
 import 'package:sample_flutter_game_with_flame/domain/player/player_factory.dart';
 import 'package:sample_flutter_game_with_flame/domain/player/player_repository.dart';
 import 'package:sample_flutter_game_with_flame/domain/player/player_service.dart';
+import 'package:sample_flutter_game_with_flame/infrastructure/player/player_factory_impl.dart';
+import 'package:sample_flutter_game_with_flame/infrastructure/player/player_repository_impl.dart';
+
+export 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final playerAppService = StateProvider(
+  (ref) => PlayerAppService(
+    repository: ref.watch(playerRepositoryProvider),
+    factory: const PlayerFactoryImpl(),
+  ),
+);
 
 @immutable
 class PlayerAppService {

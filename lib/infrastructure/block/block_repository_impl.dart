@@ -1,6 +1,12 @@
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample_flutter_game_with_flame/domain/block/block_repository.dart';
 import 'package:sample_flutter_game_with_flame/infrastructure/db.dart';
+
+final blockRepositoryProvider = StateProvider(
+  (ref) => BlockRepositoryImpl(
+    db: ref.watch(dbProvider),
+  ),
+);
 
 class BlockRepositoryImpl implements BlockRepository {
   final DB _db;
