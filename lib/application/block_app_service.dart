@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:meta/meta.dart';
 import 'package:sample_flutter_game_with_flame/application/dto/block_dto.dart';
 import 'package:sample_flutter_game_with_flame/common/exception.dart';
 import 'package:sample_flutter_game_with_flame/domain/block/block_factory.dart';
@@ -70,8 +70,8 @@ class BlockAppService {
     return target == null ? null : BlockDto(target);
   }
 
-  Future<List<BlockDto>> getBlockList(String playerId) async {
-    final _blocks = await _repository.findByPlayerId(PlayerId(playerId));
+  Future<List<BlockDto>> getBlockList() async {
+    final _blocks = await _repository.findAll();
     return _blocks.map((e) => BlockDto(e)).toList();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meta/meta.dart';
 import 'package:sample_flutter_game_with_flame/application/dto/player_dto.dart';
@@ -30,7 +31,7 @@ class PlayerAppService {
         _repository = repository,
         _service = PlayerService(repository: repository);
 
-  Future<void> createPlayer({
+  Future<Player> createPlayer({
     required String name,
     required int point,
   }) async {
@@ -46,6 +47,8 @@ class PlayerAppService {
         await _repository.save(_player);
       }
     });
+
+    return _player;
   }
 
   Future<void> deletePlayer(String id) async {

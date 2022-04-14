@@ -10,4 +10,5 @@ abstract class BlockRepository {
   Future<Block?> findById(BlockId id);
   Future<Block?> findByPoint(BlockPoint point);
   Future<Block?> findByColor(BlockColor color);
+  Future<List<Block>> findAll();
 }
