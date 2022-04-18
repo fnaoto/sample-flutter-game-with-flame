@@ -64,6 +64,24 @@ class PlayerAppService {
     });
   }
 
+  Future<void> updatePlayerPoint({
+    required String id,
+    required int point,
+  }) async {
+    final targetId = PlayerId(id);
+    final targetPoint = PlayerPoint(point);
+
+    await _repository.transaction<void>(() async {
+      final target = await _repository.findById(targetId);
+      if (target == null) {
+        throw NotFoundException(code: ExceptionCode.player);
+      }
+
+      target.changePoint(targetPoint);
+      await _repository.save(target);
+    });
+  }
+
   Future<PlayerDto?> getPlayer(String id) async {
     final targetId = PlayerId(id);
     final target = await _repository.findById(targetId);

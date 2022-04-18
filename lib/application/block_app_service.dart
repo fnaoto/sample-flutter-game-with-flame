@@ -70,6 +70,13 @@ class BlockAppService {
     return target == null ? null : BlockDto(target);
   }
 
+  Future<List<BlockDto?>> getPlayerBlocks(String playerId) async {
+    final targetPlayerId = PlayerId(playerId);
+    final targets = await _repository.findByPlayerId(targetPlayerId);
+    if (targets.isEmpty) return [];
+    return targets.map((t) => BlockDto(t)).toList();
+  }
+
   Future<List<BlockDto>> getBlockList() async {
     final _blocks = await _repository.findAll();
     return _blocks.map((e) => BlockDto(e)).toList();
