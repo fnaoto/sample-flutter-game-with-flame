@@ -23,6 +23,8 @@ class PlayerNotifier extends StateNotifier {
   List<PlayerDto> playerList = [];
   List<PlayerDto> get players => List.unmodifiable(playerList);
 
+  Future<void> get fetchPlayer async => await _updatePlayers();
+
   Future<String> createPlayer({
     required String name,
     required int point,

@@ -16,7 +16,7 @@ class Init {
   Init({
     required this.navigatorKey,
     required DB db,
-  }) : super() {
+  }) {
     db.open().then((_) {
       navigatorKey.currentState?.pushAndRemoveUntil<void>(
         MaterialPageRoute<Widget>(

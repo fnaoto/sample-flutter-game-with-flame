@@ -14,14 +14,17 @@ class HomePage extends ConsumerWidget {
         appBar: AppBar(title: const Text('Categories')),
         body: state.players.isEmpty
             ? null
-            : Column(
-                children: [
-                  ListTile(
-                    leading: const Text("playerList"),
-                    title: Text("id: ${state.players.last.id}"),
-                    subtitle: Text("name: ${state.players.last.name}"),
-                  ),
-                ],
+            : ListView(
+                shrinkWrap: true,
+                children: state.players
+                    .map(
+                      (player) => ListTile(
+                        leading: const Text("playerList"),
+                        title: Text("id: ${player.id}"),
+                        subtitle: Text("name: ${player.name}"),
+                      ),
+                    )
+                    .toList(),
               ),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.plus_one),
