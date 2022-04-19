@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample_flutter_game_with_flame/domain/player/player_repository.dart';
 import 'package:sample_flutter_game_with_flame/infrastructure/db.dart';
 
-final playerRepositoryProvider = StateProvider(
+final playerRepositoryProvider = Provider(
   (ref) => PlayerRepositoryImpl(
     db: ref.watch(dbProvider),
   ),

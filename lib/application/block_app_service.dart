@@ -10,7 +10,7 @@ import 'package:sample_flutter_game_with_flame/infrastructure/block/block_reposi
 
 export 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final blockAppService = StateProvider(
+final blockAppService = Provider(
   (ref) => BlockAppService(
     repository: ref.watch(blockRepositoryProvider),
     factory: const BlockFactoryImpl(),

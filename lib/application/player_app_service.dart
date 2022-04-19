@@ -11,7 +11,7 @@ import 'package:sample_flutter_game_with_flame/infrastructure/player/player_repo
 
 export 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final playerAppService = StateProvider(
+final playerAppService = Provider(
   (ref) => PlayerAppService(
     repository: ref.watch(playerRepositoryProvider),
     factory: const PlayerFactoryImpl(),

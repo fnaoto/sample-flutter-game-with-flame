@@ -7,13 +7,13 @@ final blockNotifierFutureProvider = FutureProvider(
   ),
 );
 
-class BlockNotifier extends StateNotifier<int> {
+class BlockNotifier extends StateNotifier {
   final BlockAppService _blockAppService;
 
   BlockNotifier({
     required BlockAppService blockAppService,
   })  : _blockAppService = blockAppService,
-        super(0);
+        super({blockAppService});
 
   List<BlockDto> blockList = [];
   List<BlockDto> get blocks => List.unmodifiable(blockList);

@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 const _dbFile = 'sample_flutter_game_with_flame.db';
 const _dbVersion = 1;
 
-final dbProvider = StateProvider((ref) => DB());
+final dbProvider = Provider((ref) => DB());
 
 class DB {
   Database? _db;

@@ -18,7 +18,7 @@ class PlayerNotifier extends StateNotifier {
     required BlockAppService blockAppService,
   })  : _playerAppService = playerAppService,
         _blockAppService = blockAppService,
-        super(0);
+        super({playerAppService, blockAppService});
 
   List<PlayerDto> playerList = [];
   List<PlayerDto> get players => List.unmodifiable(playerList);
