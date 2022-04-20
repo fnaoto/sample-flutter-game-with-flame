@@ -6,52 +6,54 @@ import 'package:sample_flutter_game_with_flame/application/dto/player_dto.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
 
 class HomePage extends ConsumerWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final playerFutureProvider = ref.watch(playerNotifierFutureProvider);
+    final players = ref.watch(playersProvider);
+    final playerNotifier = ref.watch(playerNotifierProvider);
 
-    return playerFutureProvider.when(
-      data: (state) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Categories'),
-          actions: [
-            ElevatedButton(
-              onPressed: () async {
-                Future.forEach<PlayerDto>(
-                  state.players,
-                  (player) async => await state.deletePlayer(id: player.id),
-                );
-              },
-              child: const Icon(Icons.delete),
-            ),
-          ],
-        ),
-        body: ListView(
-          shrinkWrap: true,
-          children: state.players
-              .map(
-                (player) => ListTile(
-                  leading: const Text("playerList"),
-                  title: Text("id: ${player.id}"),
-                  subtitle: Text("name: ${player.name}"),
-                ),
-              )
-              .toList(),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.plus_one),
-          onPressed: () async {
-            final int32 = pow(2, 32).toInt();
-            final random = Random().nextInt(int32);
-            await state.createPlayer(
-              name: "user-$random",
-              point: random,
-            );
-          },
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Categories'),
+        actions: [
+          ElevatedButton(
+            onPressed: () async {
+              Future.forEach<PlayerDto>(
+                players,
+                (player) async => await playerNotifier
+                    .deletePlayer(id: player.id)
+                    .then((_) => ref.refresh(playersProvider)),
+              );
+            },
+            child: const Icon(Icons.delete),
+          ),
+        ],
       ),
-      error: (e, s) => throw Exception(e),
-      loading: () => const CircleAvatar(),
+      body: ListView(
+        shrinkWrap: true,
+        children: players
+            .map(
+              (player) => ListTile(
+                leading: const Text("playerList"),
+                title: Text("id: ${player.id}"),
+                subtitle: Text("name: ${player.name}"),
+              ),
+            )
+            .toList(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.plus_one),
+        onPressed: () async {
+          final int32 = pow(2, 32).toInt();
+          final random = Random().nextInt(int32);
+          await playerNotifier.createPlayer(
+            name: "user-$random",
+            point: random,
+          );
+          ref.refresh(playersProvider);
+        },
+      ),
     );
   }
 }

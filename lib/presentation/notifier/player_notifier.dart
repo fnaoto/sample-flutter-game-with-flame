@@ -2,11 +2,19 @@ import 'package:sample_flutter_game_with_flame/application/block_app_service.dar
 import 'package:sample_flutter_game_with_flame/application/player_app_service.dart';
 import 'package:sample_flutter_game_with_flame/application/dto/player_dto.dart';
 
-final playerNotifierFutureProvider = FutureProvider.autoDispose(
+final playerNotifier = StateProvider(
   (ref) => PlayerNotifier(
     playerAppService: ref.watch(playerAppService),
     blockAppService: ref.watch(blockAppService),
   ),
+);
+
+final playersProvider = StateProvider.autoDispose(
+  (ref) => ref.watch(playerNotifier).players,
+);
+
+final playerNotifierProvider = StateProvider.autoDispose(
+  (ref) => ref.watch(playerNotifier),
 );
 
 class PlayerNotifier extends StateNotifier<List<PlayerDto>> {
