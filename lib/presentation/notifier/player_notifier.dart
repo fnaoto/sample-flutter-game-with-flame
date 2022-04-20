@@ -2,14 +2,14 @@ import 'package:sample_flutter_game_with_flame/application/block_app_service.dar
 import 'package:sample_flutter_game_with_flame/application/player_app_service.dart';
 import 'package:sample_flutter_game_with_flame/application/dto/player_dto.dart';
 
-final playerNotifierFutureProvider = FutureProvider(
+final playerNotifierFutureProvider = FutureProvider.autoDispose(
   (ref) => PlayerNotifier(
     playerAppService: ref.watch(playerAppService),
     blockAppService: ref.watch(blockAppService),
   ),
 );
 
-class PlayerNotifier extends StateNotifier {
+class PlayerNotifier extends StateNotifier<List<PlayerDto>> {
   final PlayerAppService _playerAppService;
   final BlockAppService _blockAppService;
 
@@ -18,10 +18,9 @@ class PlayerNotifier extends StateNotifier {
     required BlockAppService blockAppService,
   })  : _playerAppService = playerAppService,
         _blockAppService = blockAppService,
-        super({playerAppService, blockAppService});
+        super([]);
 
-  List<PlayerDto> playerList = [];
-  List<PlayerDto> get players => List.unmodifiable(playerList);
+  List<PlayerDto> get players => List.unmodifiable(state);
 
   Future<void> get fetchPlayer async => await _updatePlayers();
 
@@ -52,6 +51,6 @@ class PlayerNotifier extends StateNotifier {
   }
 
   Future<void> _updatePlayers() async {
-    await _playerAppService.getPlayerList().then((list) => playerList = list);
+    await _playerAppService.getPlayerList().then((list) => state = list);
   }
 }

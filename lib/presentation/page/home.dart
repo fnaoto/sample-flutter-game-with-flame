@@ -12,20 +12,18 @@ class HomePage extends ConsumerWidget {
     return playerFutureProvider.when(
       data: (state) => Scaffold(
         appBar: AppBar(title: const Text('Categories')),
-        body: state.players.isEmpty
-            ? null
-            : ListView(
-                shrinkWrap: true,
-                children: state.players
-                    .map(
-                      (player) => ListTile(
-                        leading: const Text("playerList"),
-                        title: Text("id: ${player.id}"),
-                        subtitle: Text("name: ${player.name}"),
-                      ),
-                    )
-                    .toList(),
-              ),
+        body: ListView(
+          shrinkWrap: true,
+          children: state.players
+              .map(
+                (player) => ListTile(
+                  leading: const Text("playerList"),
+                  title: Text("id: ${player.id}"),
+                  subtitle: Text("name: ${player.name}"),
+                ),
+              )
+              .toList(),
+        ),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.plus_one),
           onPressed: () async {
