@@ -10,7 +10,7 @@ import 'package:sample_flutter_game_with_flame/infrastructure/block/block_reposi
 
 export 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final blockAppService = StateProvider(
+final blockAppService = Provider(
   (ref) => BlockAppService(
     repository: ref.watch(blockRepositoryProvider),
     factory: const BlockFactoryImpl(),
@@ -68,6 +68,13 @@ class BlockAppService {
     final target = await _repository.findById(targetId);
 
     return target == null ? null : BlockDto(target);
+  }
+
+  Future<List<BlockDto?>> getPlayerBlocks(String playerId) async {
+    final targetPlayerId = PlayerId(playerId);
+    final targets = await _repository.findByPlayerId(targetPlayerId);
+    if (targets.isEmpty) return [];
+    return targets.map((t) => BlockDto(t)).toList();
   }
 
   Future<List<BlockDto>> getBlockList() async {

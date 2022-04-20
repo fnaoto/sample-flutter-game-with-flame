@@ -11,7 +11,7 @@ import 'package:sample_flutter_game_with_flame/infrastructure/player/player_repo
 
 export 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final playerAppService = StateProvider(
+final playerAppService = Provider(
   (ref) => PlayerAppService(
     repository: ref.watch(playerRepositoryProvider),
     factory: const PlayerFactoryImpl(),
@@ -61,6 +61,24 @@ class PlayerAppService {
       }
 
       await _repository.remove(target);
+    });
+  }
+
+  Future<void> updatePlayerPoint({
+    required String id,
+    required int point,
+  }) async {
+    final targetId = PlayerId(id);
+    final targetPoint = PlayerPoint(point);
+
+    await _repository.transaction<void>(() async {
+      final target = await _repository.findById(targetId);
+      if (target == null) {
+        throw NotFoundException(code: ExceptionCode.player);
+      }
+
+      target.changePoint(targetPoint);
+      await _repository.save(target);
     });
   }
 

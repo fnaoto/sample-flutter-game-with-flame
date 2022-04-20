@@ -2,45 +2,56 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sample_flutter_game_with_flame/presentation/notifier/block_notifier.dart';
+import 'package:sample_flutter_game_with_flame/application/dto/player_dto.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
 
 class HomePage extends ConsumerWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final blockStateProvider = ref.watch(blockNotifierStateProvider);
-    final playerStateProvider = ref.watch(playerNotifierStateProvider);
+    final players = ref.watch(playersProvider);
+    final playerNotifier = ref.watch(playerNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Categories')),
-      body: Column(
-        children: [
-          ListTile(
-            leading: const Text("playerList"),
-            title: Text("id: ${playerStateProvider.players.last.id}"),
-            subtitle: Text("name: ${playerStateProvider.players.last.name}"),
-          ),
-          ListTile(
-            leading: const Text("blockList"),
-            title: Text("id: ${blockStateProvider.blocks.last.id}"),
-            subtitle:
-                Text("playerId: ${blockStateProvider.blocks.last.playerId}"),
+      appBar: AppBar(
+        title: const Text('Categories'),
+        actions: [
+          ElevatedButton(
+            onPressed: () async {
+              Future.forEach<PlayerDto>(
+                players,
+                (player) async => await playerNotifier
+                    .deletePlayer(id: player.id)
+                    .then((_) => ref.refresh(playersProvider)),
+              );
+            },
+            child: const Icon(Icons.delete),
           ),
         ],
       ),
+      body: ListView(
+        shrinkWrap: true,
+        children: players
+            .map(
+              (player) => ListTile(
+                leading: const Text("playerList"),
+                title: Text("id: ${player.id}"),
+                subtitle: Text("name: ${player.name}"),
+              ),
+            )
+            .toList(),
+      ),
       floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.plus_one),
         onPressed: () async {
           final int32 = pow(2, 32).toInt();
           final random = Random().nextInt(int32);
-          final playerId = await playerStateProvider.createPlayer(
+          await playerNotifier.createPlayer(
             name: "user-$random",
-            point: 0,
+            point: random,
           );
-          await blockStateProvider.createBlock(
-            color: random,
-            point: 1,
-            playerId: playerId,
-          );
+          ref.refresh(playersProvider);
         },
       ),
     );
