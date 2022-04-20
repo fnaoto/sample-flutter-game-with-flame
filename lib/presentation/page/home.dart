@@ -10,14 +10,6 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final playerFutureProvider = ref.watch(playerNotifierFutureProvider);
 
-    Future<void> _refresh() async =>
-        Navigator.of(context).pushAndRemoveUntil<void>(
-          MaterialPageRoute<Widget>(
-            builder: (_) => HomePage(),
-          ),
-          (_) => false,
-        );
-
     return playerFutureProvider.when(
       data: (state) => Scaffold(
         appBar: AppBar(
@@ -29,7 +21,6 @@ class HomePage extends ConsumerWidget {
                   state.players,
                   (player) async => await state.deletePlayer(id: player.id),
                 );
-                await _refresh();
               },
               child: const Icon(Icons.delete),
             ),
@@ -56,7 +47,6 @@ class HomePage extends ConsumerWidget {
               name: "user-$random",
               point: random,
             );
-            await _refresh();
           },
         ),
       ),
