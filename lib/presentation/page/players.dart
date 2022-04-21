@@ -13,9 +13,9 @@ class PlayersPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Players'),
       ),
-      body: ListView(
-        shrinkWrap: true,
-        children: players
+      body: ListView(shrinkWrap: true, children: [
+        const Text("Top 10 players"),
+        ...players
             .map(
               (player) => ListTile(
                 leading: const Text("playerList"),
@@ -24,7 +24,7 @@ class PlayersPage extends ConsumerWidget {
               ),
             )
             .toList(),
-      ),
+      ]),
     );
   }
 }

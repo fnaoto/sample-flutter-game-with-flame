@@ -89,6 +89,12 @@ class PlayerAppService {
     return target == null ? null : PlayerDto(target);
   }
 
+  Future<List<PlayerDto>> getTop10Players() async {
+    final players = await _repository.findLimit(10);
+
+    return players.map((x) => PlayerDto(x)).toList();
+  }
+
   Future<List<PlayerDto>> getPlayerList() async {
     final players = await _repository.findAll();
 

@@ -61,6 +61,6 @@ class PlayerNotifier extends StateNotifier<List<PlayerDto>> {
   }
 
   Future<void> _updatePlayers() async {
-    await _playerAppService.getPlayerList().then((list) => state = list);
+    await _playerAppService.getTop10Players().then((list) => state = list);
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:sample_flutter_game_with_flame/application/block_app_service.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
@@ -8,7 +10,7 @@ class GamePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final _formKey = GlobalKey<FormState>();
     final playerProvider = ref.watch(playerNotifierProvider);
-    String _playerName = "Player";
+    String _playerName = "Player-${DateTime.now().millisecondsSinceEpoch}";
 
     return Scaffold(
       appBar: AppBar(
@@ -43,7 +45,7 @@ class GamePage extends ConsumerWidget {
                       if (_playerName.isEmpty) throw Exception("Name is empty");
                       playerProvider.createPlayer(
                         name: _playerName,
-                        point: 1,
+                        point: Random().nextInt(100),
                       );
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
