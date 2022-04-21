@@ -62,7 +62,7 @@ class PlayerRepositoryImpl implements PlayerRepository {
   @override
   Future<List<Player>> findLimit(int limit) async {
     final list = await _db.rawQuery(
-      'SELECT * FROM players ORDER BY point LIMIT ?',
+      'SELECT * FROM players ORDER BY point DESC LIMIT ?',
       <int>[limit],
     );
 

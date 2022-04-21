@@ -13,18 +13,21 @@ class PlayersPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Players'),
       ),
-      body: ListView(shrinkWrap: true, children: [
-        const Text("Top 10 players"),
-        ...players
-            .map(
-              (player) => ListTile(
-                leading: const Text("playerList"),
-                title: Text("id: ${player.id}"),
-                subtitle: Text("name: ${player.name}"),
-              ),
-            )
-            .toList(),
-      ]),
+      body: ListView(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(10),
+        children: [
+          const Center(child: Text("Top 10 players")),
+          ...players
+              .map(
+                (player) => ListTile(
+                  title: Text("point: ${player.point}"),
+                  subtitle: Text("name: ${player.name}"),
+                ),
+              )
+              .toList(),
+        ],
+      ),
     );
   }
 }
