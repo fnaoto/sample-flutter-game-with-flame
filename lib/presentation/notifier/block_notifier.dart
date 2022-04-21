@@ -1,6 +1,8 @@
 import 'package:sample_flutter_game_with_flame/application/block_app_service.dart';
 import 'package:sample_flutter_game_with_flame/application/dto/block_dto.dart';
 
+export 'package:sample_flutter_game_with_flame/application/dto/block_dto.dart';
+
 final blockNotifierFutureProvider = FutureProvider(
   (ref) => BlockNotifier(
     blockAppService: ref.watch(blockAppService),

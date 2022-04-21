@@ -9,4 +9,5 @@ abstract class PlayerRepository {
   Future<Player?> findById(PlayerId id);
   Future<Player?> findByName(PlayerName name);
   Future<List<Player>> findAll();
+  Future<List<Player>> findLimit(int limit);
 }
