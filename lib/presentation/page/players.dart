@@ -8,10 +8,24 @@ class PlayersPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final players = ref.watch(playersProvider);
+    final playerProvider = ref.watch(playerNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Players'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              Future.forEach<PlayerDto>(
+                players,
+                (player) async => await playerProvider
+                    .deletePlayer(id: player.id)
+                    .then((_) => ref.refresh(playersProvider)),
+              );
+            },
+            icon: const Icon(Icons.delete),
+          )
+        ],
       ),
       body: ListView(
         shrinkWrap: true,
