@@ -20,7 +20,7 @@ class Init {
     db.open().then((_) {
       navigatorKey.currentState?.pushAndRemoveUntil<void>(
         MaterialPageRoute<Widget>(
-          builder: (_) => HomePage(),
+          builder: (_) => const HomePage(),
         ),
         (_) => false,
       );
