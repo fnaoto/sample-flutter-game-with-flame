@@ -34,7 +34,7 @@ class DrawerPage extends ConsumerWidget {
             child: const ListTile(
               title: Center(child: Text("go to players")),
               tileColor: Colors.lightGreen,
-              trailing: Icon(Icons.home),
+              trailing: Icon(Icons.person),
             ),
           ),
           TextButton(
