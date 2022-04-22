@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:sample_flutter_game_with_flame/application/block_app_service.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
+import 'package:sample_flutter_game_with_flame/presentation/page/drawer.dart';
 import 'package:sample_flutter_game_with_flame/presentation/page/result.dart';
 
 class GamePage extends ConsumerWidget {
@@ -13,9 +14,13 @@ class GamePage extends ConsumerWidget {
     String _playerName = "Player-${DateTime.now().millisecondsSinceEpoch}";
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Game'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.green,
       ),
+      drawer: DrawerPage(),
       body: Center(
         child: ListView(
           shrinkWrap: true,

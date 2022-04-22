@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sample_flutter_game_with_flame/presentation/page/drawer.dart';
 import 'package:sample_flutter_game_with_flame/presentation/page/home.dart';
 import 'package:sample_flutter_game_with_flame/presentation/page/players.dart';
 
@@ -9,9 +10,13 @@ class ResultPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Result'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.green,
       ),
+      drawer: DrawerPage(),
       body: Center(
         child: ListView(
           shrinkWrap: true,
