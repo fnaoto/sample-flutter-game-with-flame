@@ -7,6 +7,8 @@ import 'package:sample_flutter_game_with_flame/presentation/page/home.dart';
 class GamePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -17,7 +19,10 @@ class GamePage extends ConsumerWidget {
       drawer: DrawerPage(),
       body: Center(
         child: GameWidget(
-          game: MyGame(),
+          game: Flame(
+            screenHeight: size.height,
+            screenWidth: size.width,
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

@@ -9,32 +9,34 @@ import 'package:flutter/material.dart';
 
 export 'package:flame/game.dart';
 
-class MyGame extends FlameGame with DoubleTapDetector, HasTappables {
+class Flame extends FlameGame with HasTappables {
+  Flame({
+    required this.screenWidth,
+    required this.screenHeight,
+  });
+
   bool running = true;
+  double screenWidth;
+  double screenHeight;
 
   @override
   Future<void> onLoad() async {
-    add(Circle(Vector2(100, 200)));
+    final randomWidthRate = math.Random().nextDouble();
+    final randomHeightRate = math.Random().nextDouble();
+    final vector = Vector2(
+      screenWidth * randomWidthRate,
+      screenHeight * randomHeightRate,
+    );
+    add(Circle(vector));
   }
 
   @override
   void onTapUp(int pointerId, TapUpInfo info) {
     super.onTapUp(pointerId, info);
     if (!info.handled) {
-      final touchPoint = info.eventPosition.game;
-      add(Circle(touchPoint));
+      final gameVectorPosition = info.eventPosition.game;
+      add(Circle(gameVectorPosition));
     }
-  }
-
-  @override
-  void onDoubleTap() {
-    if (running) {
-      pauseEngine();
-    } else {
-      resumeEngine();
-    }
-
-    running = !running;
   }
 }
 
