@@ -8,27 +8,21 @@ class GamePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black,
         elevation: 0,
         foregroundColor: Colors.green,
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute<void>(builder: (_) => GamePage()),
+                  (_) => false),
+              child: const Text("Reload")),
+        ],
       ),
       drawer: DrawerPage(),
-      body: Center(
-        child: GameWidget(
-          game: MyGame(),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute<void>(
-            builder: (_) => const HomePage(),
-          ),
-          (_) => false,
-        ),
-        child: const Text("End"),
-      ),
+      body: GameWidget(game: FlamePage()),
     );
   }
 }

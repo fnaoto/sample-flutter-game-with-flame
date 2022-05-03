@@ -27,9 +27,9 @@ class DrawerPage extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute<void>(builder: (_) => const PlayersPage()),
-                  (_) => false);
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const PlayersPage()),
+              );
             },
             child: const ListTile(
               title: Center(child: Text("go to players")),
