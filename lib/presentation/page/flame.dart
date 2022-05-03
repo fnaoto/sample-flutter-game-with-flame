@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -9,68 +8,59 @@ import 'package:flutter/material.dart';
 
 export 'package:flame/game.dart';
 
-class Flame extends FlameGame with HasTappables {
-  Flame({
-    required this.screenWidth,
-    required this.screenHeight,
-  });
+class FlamePage extends FlameGame with HasTappables {
+  final List<Square> _squares = [];
 
-  bool running = true;
-  double screenWidth;
-  double screenHeight;
+  Future<void> get createSquares async {
+    final double width = size.x;
+    final double height = size.y - kBottomNavigationBarHeight;
+    final double _size = width > height ? height / 5 : width / 5;
 
-  @override
-  Future<void> onLoad() async {
-    final randomWidthRate = math.Random().nextDouble();
-    final randomHeightRate = math.Random().nextDouble();
-    final vector = Vector2(
-      screenWidth * randomWidthRate,
-      screenHeight * randomHeightRate,
-    );
-    add(Circle(vector));
-  }
+    final wRange = width * 1 ~/ 3;
+    final hRange = height * 1 ~/ 3;
 
-  @override
-  void onTapUp(int pointerId, TapUpInfo info) {
-    super.onTapUp(pointerId, info);
-    if (!info.handled) {
-      final gameVectorPosition = info.eventPosition.game;
-      add(Circle(gameVectorPosition));
+    for (double w = _size / 2; w < width; w += wRange) {
+      for (double h = _size / 2; h < height; h += hRange) {
+        final wRand = math.Random().nextInt(wRange ~/ 2);
+        final hRand = math.Random().nextInt(hRange ~/ 2);
+        final vec2 = Vector2(w + wRand, h + hRand);
+        final square = Square(vec2, _size);
+        _squares.add(square);
+      }
     }
+
+    debugPrint("_squares: ${_squares.map((s) => s.position).toList()}");
+    _squares.map((s) async => add(s)).toList();
   }
+
+  @override
+  Future<void> onLoad() async => createSquares;
 }
 
-class Circle extends PositionComponent with Tappable {
-  static const speed = 3;
-  static const circleSize = 128.0;
+class Square extends PositionComponent with Tappable {
+  Square(Vector2 position, this.squareSize) : super(position: position);
+
+  final double squareSize;
 
   static Paint white = BasicPalette.white.paint();
   static Paint red = BasicPalette.red.paint();
   static Paint blue = BasicPalette.blue.paint();
 
-  Circle(Vector2 position) : super(position: position);
-
   @override
   void render(Canvas canvas) {
-    canvas.drawCircle(const Offset(100, 100), 30, white);
-  }
-
-  @override
-  void update(double dt) {
-    super.update(dt);
-    angle += speed * dt;
-    angle %= 2 * math.pi;
+    canvas.drawRect(size.toRect(), white);
   }
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    size.setValues(circleSize, circleSize);
+    size.setValues(squareSize, squareSize);
     anchor = Anchor.center;
   }
 
   @override
   bool onTapUp(TapUpInfo info) {
+    debugPrint("info: ${info.eventPosition.game}");
     removeFromParent();
     return true;
   }
