@@ -23,8 +23,9 @@ class FlamePage extends FlameGame with HasTappables {
       for (double h = _size / 2; h < height; h += hRange) {
         final wRand = math.Random().nextInt(wRange ~/ 2);
         final hRand = math.Random().nextInt(hRange ~/ 2);
+        final pRand = math.Random().nextInt(100);
         final vec2 = Vector2(w + wRand, h + hRand);
-        final square = Square(vec2, _size);
+        final square = Square(vec2, pRand.toString(), _size);
         _squares.add(square);
       }
     }
@@ -37,8 +38,9 @@ class FlamePage extends FlameGame with HasTappables {
   Future<void> onLoad() async => createSquares;
 }
 
-class Square extends PositionComponent with Tappable {
-  Square(Vector2 position, this.squareSize) : super(position: position);
+class Square extends TextComponent with Tappable {
+  Square(Vector2 position, String text, this.squareSize)
+      : super(position: position, text: text);
 
   final double squareSize;
 
@@ -49,13 +51,21 @@ class Square extends PositionComponent with Tappable {
   @override
   void render(Canvas canvas) {
     canvas.drawRect(size.toRect(), white);
+    super.render(canvas);
   }
 
   @override
   Future<void> onLoad() async {
-    super.onLoad();
+    textRenderer = TextPaint(
+      style: TextStyle(
+        color: BasicPalette.black.color,
+        fontWeight: FontWeight.bold,
+        fontSize: squareSize - 10,
+      ),
+    );
     size.setValues(squareSize, squareSize);
     anchor = Anchor.center;
+    super.onLoad();
   }
 
   @override
