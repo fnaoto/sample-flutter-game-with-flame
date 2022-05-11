@@ -32,17 +32,15 @@ class BlockAppService {
 
   Future<void> createBlock({
     required int point,
-    required int color,
     required String playerId,
   }) async {
     final _block = _factory.create(
       point: BlockPoint(point),
-      color: BlockColor(color),
       playerId: PlayerId(playerId),
     );
 
     await _repository.transaction<void>(() async {
-      if (await _service.isDuplicated(_block.color)) {
+      if (await _service.isDuplicated(_block.id)) {
         throw DuplicatedException(code: ExceptionCode.block);
       } else {
         await _repository.save(_block);

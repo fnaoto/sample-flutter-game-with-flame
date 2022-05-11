@@ -15,13 +15,11 @@ class BlockRepositoryImpl implements BlockRepository {
 
   Block toBlock(Map<String, dynamic> data) {
     final id = data['id'] as String;
-    final color = data['color'] as int;
     final point = data['point'] as int;
     final playerId = data['playerId'] as String;
 
     return Block(
       id: BlockId(id),
-      color: BlockColor(color),
       point: BlockPoint(point),
       playerId: PlayerId(playerId),
     );
@@ -53,16 +51,6 @@ class BlockRepositoryImpl implements BlockRepository {
   }
 
   @override
-  Future<Block?> findByColor(BlockColor color) async {
-    final list = await _db.rawQuery(
-      'SELECT * FROM blocks WHERE color = ?',
-      <int>[color.value],
-    );
-
-    return list.isEmpty ? null : toBlock(list[0]);
-  }
-
-  @override
   Future<Block?> findByPoint(BlockPoint point) async {
     final list = await _db.rawQuery(
       'SELECT * FROM blocks WHERE point = ?',
@@ -84,10 +72,9 @@ class BlockRepositoryImpl implements BlockRepository {
   @override
   Future<void> save(Block block) async {
     await _db.rawInsert(
-      'INSERT OR REPLACE INTO blocks (id, color, point, playerId) VALUES (?, ?, ?, ?)',
+      'INSERT OR REPLACE INTO blocks (id, point, playerId) VALUES (?, ?, ?)',
       <dynamic>[
         block.id.value,
-        block.color.value,
         block.point.value,
         block.playerId.value,
       ],

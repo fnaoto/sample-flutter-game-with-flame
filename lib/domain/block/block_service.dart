@@ -6,8 +6,8 @@ class BlockService {
   const BlockService({required BlockRepository repository})
       : _repos = repository;
 
-  Future<bool> isDuplicated(BlockColor color) async {
-    final result = await _repos.findByColor(color);
+  Future<bool> isDuplicated(BlockId id) async {
+    final result = await _repos.findById(id);
     return result != null;
   }
 }

@@ -8,13 +8,11 @@ class BlockFactoryImpl implements BlockFactory {
   @override
   Block create({
     required BlockPoint point,
-    required BlockColor color,
     required PlayerId playerId,
   }) {
     return Block(
       id: BlockId(const Uuid().v4()),
       point: point,
-      color: color,
       playerId: playerId,
     );
   }

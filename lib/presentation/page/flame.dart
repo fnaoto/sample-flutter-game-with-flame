@@ -5,11 +5,26 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:sample_flutter_game_with_flame/presentation/notifier/block_notifier.dart';
+import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
 
 export 'package:flame/game.dart';
 
 class FlamePage extends FlameGame with HasTappables {
+  FlamePage(this.playerNotifier, this.blockNotifier);
+
   final List<Square> _squares = [];
+  final PlayerNotifier playerNotifier;
+  final BlockNotifier blockNotifier;
+
+  late final PlayerDto player;
+
+  Future<void> get createPlayer async {
+    final date = DateTime.now();
+    final playerId =
+        await playerNotifier.createPlayer(name: "player $date", point: 0);
+    player = playerNotifier.players.firstWhere((p) => p.id == playerId);
+  }
 
   Future<void> get createSquares async {
     final double width = size.x;
@@ -19,12 +34,12 @@ class FlamePage extends FlameGame with HasTappables {
     final wRange = width * 1 ~/ 3;
     final hRange = height * 1 ~/ 3;
 
-    for (double w = _size / 2; w < width; w += wRange) {
-      for (double h = _size / 2; h < height; h += hRange) {
-        final wRand = math.Random().nextInt(wRange ~/ 2);
-        final hRand = math.Random().nextInt(hRange ~/ 2);
+    for (double x = _size / 2; x < width; x += wRange) {
+      for (double y = _size / 2; y < height; y += hRange) {
+        final xRand = math.Random().nextInt(wRange ~/ 2);
+        final yRand = math.Random().nextInt(hRange ~/ 2);
         final pRand = math.Random().nextInt(100);
-        final vec2 = Vector2(w + wRand, h + hRand);
+        final vec2 = Vector2(x + xRand, y + yRand);
         final square = Square(vec2, pRand.toString(), _size);
         _squares.add(square);
       }
@@ -35,7 +50,19 @@ class FlamePage extends FlameGame with HasTappables {
   }
 
   @override
-  Future<void> onLoad() async => createSquares;
+  Future<void> onLoad() async => {
+        await createSquares,
+        await createPlayer,
+      };
+
+  @override
+  void onTapUp(int pointerId, TapUpInfo info) async {
+    super.onTapUp(pointerId, info);
+    if (children.isEmpty) {
+      await blockNotifier.createBlock(point: 100, playerId: player.id);
+      await playerNotifier.updatePlayer(id: player.id);
+    }
+  }
 }
 
 class Square extends TextComponent with Tappable {
@@ -69,9 +96,8 @@ class Square extends TextComponent with Tappable {
   }
 
   @override
-  bool onTapUp(TapUpInfo info) {
-    debugPrint("info: ${info.eventPosition.game}");
+  bool onTapDown(TapDownInfo info) {
     removeFromParent();
-    return true;
+    return super.onTapDown(info);
   }
 }
