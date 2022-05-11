@@ -8,7 +8,7 @@ class PlayersPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final players = ref.watch(playersProvider);
+    final top10players = ref.watch(top10PlayersProvider);
 
     return Scaffold(
       extendBodyBehindAppBar: false,
@@ -23,7 +23,7 @@ class PlayersPage extends ConsumerWidget {
         padding: const EdgeInsets.all(10),
         children: [
           const Center(child: Text("Top 10 players")),
-          ...players
+          ...top10players
               .map(
                 (player) => ListTile(
                   title: Text("point: ${player.point}"),

@@ -11,8 +11,12 @@ final playerNotifier = StateProvider(
   ),
 );
 
-final playersProvider = StateProvider.autoDispose(
+final top10PlayersProvider = StateProvider.autoDispose(
   (ref) => ref.watch(playerNotifier).top10Players,
+);
+
+final playersProvider = StateProvider.autoDispose(
+  (ref) => ref.watch(playerNotifier).players,
 );
 
 class PlayerNotifier extends StateNotifier<List<PlayerDto>> {
