@@ -53,7 +53,7 @@ class PlayerRepositoryImpl implements PlayerRepository {
   @override
   Future<List<Player>> findAll() async {
     final list = await _db.rawQuery(
-      'SELECT * FROM players ORDER BY point',
+      'SELECT * FROM players ORDER BY point DESC',
     );
 
     return list.isEmpty ? [] : list.map((data) => toPlayer(data)).toList();

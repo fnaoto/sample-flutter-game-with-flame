@@ -13,7 +13,7 @@ class ResultPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _formKey = GlobalKey<FormState>();
-    final playerProvider = ref.watch(playerNotifierProvider);
+    final player = ref.watch(playerNotifier);
     String _playerName = "Player-${DateTime.now().millisecondsSinceEpoch}";
 
     Widget _userForm = Form(
@@ -37,7 +37,7 @@ class ResultPage extends ConsumerWidget {
             child: const Text('Submit'),
             onPressed: () {
               if (_playerName.isEmpty) throw Exception("Name is empty");
-              playerProvider.createPlayer(
+              player.createPlayer(
                 name: _playerName,
                 point: Random().nextInt(100),
               );

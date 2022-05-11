@@ -3,7 +3,7 @@ import 'package:sample_flutter_game_with_flame/application/dto/block_dto.dart';
 
 export 'package:sample_flutter_game_with_flame/application/dto/block_dto.dart';
 
-final blockNotifierFutureProvider = FutureProvider(
+final blockNotifier = StateProvider(
   (ref) => BlockNotifier(
     blockAppService: ref.watch(blockAppService),
   ),
@@ -21,13 +21,11 @@ class BlockNotifier extends StateNotifier {
   List<BlockDto> get blocks => List.unmodifiable(blockList);
 
   Future<void> createBlock({
-    required int color,
     required int point,
     required String playerId,
   }) async {
     await _blockAppService.createBlock(
       point: point,
-      color: color,
       playerId: playerId,
     );
     _updateBlocks();

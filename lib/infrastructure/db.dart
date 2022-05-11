@@ -22,7 +22,6 @@ class DB {
         await db.execute('''
           CREATE TABLE blocks (
             id TEXT NOT NULL,
-            color INTEGER NOT NULL,
             point INTEGER NOT NULL,
             playerId TEXT NOT NULL,
             PRIMARY KEY (id)
