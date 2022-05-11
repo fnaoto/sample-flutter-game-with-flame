@@ -12,11 +12,7 @@ final playerNotifier = StateProvider(
 );
 
 final playersProvider = StateProvider.autoDispose(
-  (ref) => ref.watch(playerNotifier).players,
-);
-
-final playerNotifierProvider = StateProvider.autoDispose(
-  (ref) => ref.watch(playerNotifier),
+  (ref) => ref.watch(playerNotifier).top10Players,
 );
 
 class PlayerNotifier extends StateNotifier<List<PlayerDto>> {
@@ -31,6 +27,7 @@ class PlayerNotifier extends StateNotifier<List<PlayerDto>> {
         super([]);
 
   List<PlayerDto> get players => List.unmodifiable(state);
+  List<PlayerDto> get top10Players => List.unmodifiable(state.take(10));
 
   Future<void> get fetchPlayer async => await _updatePlayers();
 
@@ -61,6 +58,6 @@ class PlayerNotifier extends StateNotifier<List<PlayerDto>> {
   }
 
   Future<void> _updatePlayers() async {
-    await _playerAppService.getTop10Players().then((list) => state = list);
+    await _playerAppService.getPlayerList().then((list) => state = list);
   }
 }

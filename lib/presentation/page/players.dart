@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
 import 'package:sample_flutter_game_with_flame/presentation/page/drawer.dart';
-import 'package:sample_flutter_game_with_flame/presentation/page/home.dart';
 
 class PlayersPage extends ConsumerWidget {
   const PlayersPage({Key? key}) : super(key: key);

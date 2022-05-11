@@ -61,6 +61,8 @@ class FlamePage extends FlameGame with HasTappables {
     if (children.isEmpty) {
       await blockNotifier.createBlock(point: 100, playerId: player.id);
       await playerNotifier.updatePlayer(id: player.id);
+      _squares.clear();
+      await createSquares;
     }
   }
 }

@@ -8,7 +8,7 @@ class DrawerPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final players = ref.watch(playersProvider);
-    final playerProvider = ref.watch(playerNotifierProvider);
+    final player = ref.watch(playerNotifier);
 
     return Drawer(
       child: ListView(
@@ -41,8 +41,8 @@ class DrawerPage extends ConsumerWidget {
             onPressed: () async {
               Future.forEach<PlayerDto>(
                 players,
-                (player) async => await playerProvider
-                    .deletePlayer(id: player.id)
+                (p) async => await player
+                    .deletePlayer(id: p.id)
                     .then((_) => ref.refresh(playersProvider)),
               );
             },
