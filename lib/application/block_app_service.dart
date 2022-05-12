@@ -30,8 +30,10 @@ class BlockAppService {
         _repository = repository,
         _service = BlockService(repository: repository);
 
-  Future<void> createBlock({
+  Future<String> createBlock({
     required int point,
+    required bool isTapped,
+    required bool needToTap,
     required String playerId,
   }) async {
     final _block = _factory.create(
@@ -46,6 +48,8 @@ class BlockAppService {
         await _repository.save(_block);
       }
     });
+
+    return _block.id.value;
   }
 
   Future<void> deleteBlock(String id) async {
@@ -58,6 +62,29 @@ class BlockAppService {
       }
 
       await _repository.remove(target);
+    });
+  }
+
+  Future<void> updateBlock({
+    required String id,
+    required int point,
+    required bool isTapped,
+    required bool needToTap,
+    required String playerId,
+  }) async {
+    final targetId = BlockId(id);
+    final targetPoint = BlockPoint(point);
+    final targetPlayerId = PlayerId(playerId);
+
+    await _repository.transaction<void>(() async {
+      final target = await _repository.findById(targetId);
+      if (target == null) {
+        throw NotFoundException(code: ExceptionCode.block);
+      }
+
+      target.changePoint(targetPoint);
+      target.changePlayerId(targetPlayerId);
+      await _repository.save(target);
     });
   }
 

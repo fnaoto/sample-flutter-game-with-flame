@@ -63,7 +63,7 @@ class BlockRepositoryImpl implements BlockRepository {
   @override
   Future<List<Block>> findAll() async {
     final list = await _db.rawQuery(
-      'SELECT * FROM blocks ORDER BY id',
+      'SELECT * FROM blocks ORDER BY point DESC',
     );
 
     return list.isEmpty ? [] : list.map((data) => toBlock(data)).toList();

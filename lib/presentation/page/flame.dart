@@ -11,19 +11,38 @@ import 'package:sample_flutter_game_with_flame/presentation/notifier/player_noti
 export 'package:flame/game.dart';
 
 class FlamePage extends FlameGame with HasTappables {
-  FlamePage(this.playerNotifier, this.blockNotifier);
+  FlamePage(this._playerNotifier, this._blockNotifier);
 
   final List<Square> _squares = [];
-  final PlayerNotifier playerNotifier;
-  final BlockNotifier blockNotifier;
+  final PlayerNotifier _playerNotifier;
+  final BlockNotifier _blockNotifier;
 
   late final PlayerDto player;
 
   Future<void> get createPlayer async {
     final date = DateTime.now();
-    final playerId =
-        await playerNotifier.createPlayer(name: "player $date", point: 0);
-    player = playerNotifier.players.firstWhere((p) => p.id == playerId);
+    player = await _playerNotifier.createPlayer(name: "player $date", point: 0);
+  }
+
+  Future<BlockDto> createBlock(int point) async {
+    final _id = await _blockNotifier.createBlock(
+      point: point,
+      isTapped: false,
+      needToTap: false,
+      playerId: player.id,
+    );
+    return _blockNotifier.blocks.firstWhere((b) => b.id == _id);
+  }
+
+  Future<void> get _updateNeedToTapFlag async {
+    if (_squares.isNotEmpty) {
+      _squares.sort((a, b) => a.point.compareTo(b.point));
+      final _maxPointBlockIds = _squares
+          .takeWhile((value) => _squares.first.point == value.point)
+          .map((e) => e.block.id)
+          .toList();
+      _blockNotifier.needToTapBlockIds.addAll(_maxPointBlockIds);
+    }
   }
 
   Future<void> get createSquares async {
@@ -40,38 +59,60 @@ class FlamePage extends FlameGame with HasTappables {
         final yRand = math.Random().nextInt(hRange ~/ 2);
         final pRand = math.Random().nextInt(100);
         final vec2 = Vector2(x + xRand, y + yRand);
-        final square = Square(vec2, pRand.toString(), _size);
+        final _block = await createBlock(pRand);
+        final square = Square(
+          vec2,
+          pRand,
+          _size,
+          _blockNotifier,
+          _block,
+        );
         _squares.add(square);
       }
     }
-
-    debugPrint("_squares: ${_squares.map((s) => s.position).toList()}");
-    _squares.map((s) async => add(s)).toList();
+    await _updateNeedToTapFlag;
+    _squares.map((s) async => await add(s)).toList();
   }
 
   @override
   Future<void> onLoad() async => {
-        await createSquares,
         await createPlayer,
+        await createSquares,
       };
 
   @override
   void onTapUp(int pointerId, TapUpInfo info) async {
     super.onTapUp(pointerId, info);
+    await _playerNotifier.updatePlayer(id: player.id);
     if (children.isEmpty) {
-      await blockNotifier.createBlock(point: 100, playerId: player.id);
-      await playerNotifier.updatePlayer(id: player.id);
       _squares.clear();
       await createSquares;
+    }
+    if (_blockNotifier.isFailed) {
+      _squares.clear();
+      pauseEngine();
+    } else {
+      if (_blockNotifier.tappedBlockId != null) {
+        _squares.removeWhere((s) => s.block.id == _blockNotifier.tappedBlockId);
+        await _updateNeedToTapFlag;
+      }
     }
   }
 }
 
 class Square extends TextComponent with Tappable {
-  Square(Vector2 position, String text, this.squareSize)
-      : super(position: position, text: text);
+  Square(
+    Vector2 position,
+    this.point,
+    this.squareSize,
+    this._blockNotifier,
+    this.block,
+  ) : super(position: position, text: point.toString());
 
+  final int point;
   final double squareSize;
+  final BlockNotifier _blockNotifier;
+  final BlockDto block;
 
   static Paint white = BasicPalette.white.paint();
   static Paint red = BasicPalette.red.paint();
@@ -99,7 +140,21 @@ class Square extends TextComponent with Tappable {
 
   @override
   bool onTapDown(TapDownInfo info) {
-    removeFromParent();
+    if (_blockNotifier.needToTapBlockIds.contains(block.id)) {
+      _blockNotifier.tappedBlockId = block.id;
+      _blockNotifier.failedBlockId = null;
+      removeFromParent();
+    } else {
+      _blockNotifier.failedBlockId = block.id;
+      _blockNotifier.tappedBlockId = null;
+      textRenderer = TextPaint(
+        style: TextStyle(
+          color: BasicPalette.red.color,
+          fontWeight: FontWeight.bold,
+          fontSize: squareSize - 10,
+        ),
+      );
+    }
     return super.onTapDown(info);
   }
 }
