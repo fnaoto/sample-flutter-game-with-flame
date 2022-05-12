@@ -23,6 +23,8 @@ class DB {
           CREATE TABLE blocks (
             id TEXT NOT NULL,
             point INTEGER NOT NULL,
+            isTapped BOOL NOT NULL,
+            needToTap BOOL NOT NULL,
             playerId TEXT NOT NULL,
             PRIMARY KEY (id)
           )

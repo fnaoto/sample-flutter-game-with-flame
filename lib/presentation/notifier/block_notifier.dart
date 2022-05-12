@@ -19,24 +19,54 @@ class BlockNotifier extends StateNotifier {
 
   List<BlockDto> blockList = [];
   List<BlockDto> get blocks => List.unmodifiable(blockList);
+  Future<void> get fetchBlocks async => await _updateBlocks();
 
-  Future<void> createBlock({
+  String? tappedBlockId;
+  String? failedBlockId;
+  String needToTapBlockId = "";
+
+  bool get isFailed => failedBlockId != null;
+
+  Future<String> createBlock({
     required int point,
+    required bool isTapped,
+    required bool needToTap,
     required String playerId,
   }) async {
-    await _blockAppService.createBlock(
+    final _blockId = await _blockAppService.createBlock(
       point: point,
+      isTapped: isTapped,
+      needToTap: needToTap,
       playerId: playerId,
     );
-    _updateBlocks();
+    await _updateBlocks();
+    return _blockId;
+  }
+
+  Future<BlockDto> updateBlock({
+    required String id,
+    required int point,
+    required bool isTapped,
+    required bool needToTap,
+    required String playerId,
+  }) async {
+    await _blockAppService.updateBlock(
+      id: id,
+      point: point,
+      isTapped: isTapped,
+      needToTap: needToTap,
+      playerId: playerId,
+    );
+    await _updateBlocks();
+    return blocks.firstWhere((b) => b.id == id);
   }
 
   Future<void> deleteBlock({required String id}) async {
     await _blockAppService.deleteBlock(id);
-    _updateBlocks();
+    await _updateBlocks();
   }
 
-  void _updateBlocks() {
-    _blockAppService.getBlockList().then((list) => blockList = list);
+  Future<void> _updateBlocks() async {
+    await _blockAppService.getBlockList().then((list) => blockList = list);
   }
 }

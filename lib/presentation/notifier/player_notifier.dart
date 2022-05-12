@@ -35,7 +35,7 @@ class PlayerNotifier extends StateNotifier<List<PlayerDto>> {
 
   Future<void> get fetchPlayer async => await _updatePlayers();
 
-  Future<String> createPlayer({
+  Future<PlayerDto> createPlayer({
     required String name,
     required int point,
   }) async {
@@ -44,7 +44,7 @@ class PlayerNotifier extends StateNotifier<List<PlayerDto>> {
       point: point,
     );
     await _updatePlayers();
-    return _player.id.value;
+    return players.firstWhere((p) => p.id == _player.id.value);
   }
 
   Future<void> deletePlayer({required String id}) async {
