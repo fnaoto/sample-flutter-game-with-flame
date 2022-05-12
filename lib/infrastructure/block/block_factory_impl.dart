@@ -8,15 +8,11 @@ class BlockFactoryImpl implements BlockFactory {
   @override
   Block create({
     required BlockPoint point,
-    required BlockIsTapped isTapped,
-    required BlockNeedToTap needToTap,
     required PlayerId playerId,
   }) {
     return Block(
       id: BlockId(const Uuid().v4()),
       point: point,
-      isTapped: isTapped,
-      needToTap: needToTap,
       playerId: playerId,
     );
   }

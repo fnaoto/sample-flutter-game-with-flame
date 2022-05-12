@@ -38,8 +38,6 @@ class BlockAppService {
   }) async {
     final _block = _factory.create(
       point: BlockPoint(point),
-      isTapped: BlockIsTapped(isTapped),
-      needToTap: BlockNeedToTap(needToTap),
       playerId: PlayerId(playerId),
     );
 
@@ -76,8 +74,6 @@ class BlockAppService {
   }) async {
     final targetId = BlockId(id);
     final targetPoint = BlockPoint(point);
-    final targetIsTapped = BlockIsTapped(isTapped);
-    final targetNeedToTap = BlockNeedToTap(needToTap);
     final targetPlayerId = PlayerId(playerId);
 
     await _repository.transaction<void>(() async {
@@ -87,8 +83,6 @@ class BlockAppService {
       }
 
       target.changePoint(targetPoint);
-      target.changeIsTapped(targetIsTapped);
-      target.changeNeedToTap(targetNeedToTap);
       target.changePlayerId(targetPlayerId);
       await _repository.save(target);
     });

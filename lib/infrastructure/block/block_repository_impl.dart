@@ -16,15 +16,11 @@ class BlockRepositoryImpl implements BlockRepository {
   Block toBlock(Map<String, dynamic> data) {
     final id = data['id'] as String;
     final point = data['point'] as int;
-    final isTapped = (data['isTapped'] as int == 1);
-    final needToTap = (data['needToTap'] as int == 1);
     final playerId = data['playerId'] as String;
 
     return Block(
       id: BlockId(id),
       point: BlockPoint(point),
-      isTapped: BlockIsTapped(isTapped),
-      needToTap: BlockNeedToTap(needToTap),
       playerId: PlayerId(playerId),
     );
   }
@@ -76,12 +72,10 @@ class BlockRepositoryImpl implements BlockRepository {
   @override
   Future<void> save(Block block) async {
     await _db.rawInsert(
-      'INSERT OR REPLACE INTO blocks (id, point, isTapped, needToTap, playerId) VALUES (?, ?, ?, ?, ?)',
+      'INSERT OR REPLACE INTO blocks (id, point, playerId) VALUES (?, ?, ?)',
       <dynamic>[
         block.id.value,
         block.point.value,
-        block.isTapped.value,
-        block.needToTap.value,
         block.playerId.value,
       ],
     );
