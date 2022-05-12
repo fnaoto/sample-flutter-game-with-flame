@@ -23,7 +23,7 @@ class BlockNotifier extends StateNotifier {
 
   String? tappedBlockId;
   String? failedBlockId;
-  String needToTapBlockId = "";
+  List<String> needToTapBlockIds = [];
 
   bool get isFailed => failedBlockId != null;
 

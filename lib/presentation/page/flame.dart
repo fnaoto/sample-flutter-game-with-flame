@@ -37,7 +37,11 @@ class FlamePage extends FlameGame with HasTappables {
   Future<void> get _updateNeedToTapFlag async {
     if (_squares.isNotEmpty) {
       _squares.sort((a, b) => a.point.compareTo(b.point));
-      _blockNotifier.needToTapBlockId = _squares.first.block.id;
+      final _maxPointBlockIds = _squares
+          .takeWhile((value) => _squares.first.point == value.point)
+          .map((e) => e.block.id)
+          .toList();
+      _blockNotifier.needToTapBlockIds.addAll(_maxPointBlockIds);
     }
   }
 
@@ -136,7 +140,7 @@ class Square extends TextComponent with Tappable {
 
   @override
   bool onTapDown(TapDownInfo info) {
-    if (_blockNotifier.needToTapBlockId == block.id) {
+    if (_blockNotifier.needToTapBlockIds.contains(block.id)) {
       _blockNotifier.tappedBlockId = block.id;
       _blockNotifier.failedBlockId = null;
       removeFromParent();
