@@ -3,7 +3,8 @@ import 'package:sample_flutter_game_with_flame/application/block_app_service.dar
 import 'package:sample_flutter_game_with_flame/presentation/notifier/block_notifier.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
 import 'package:sample_flutter_game_with_flame/presentation/page/drawer.dart';
-import 'package:sample_flutter_game_with_flame/presentation/page/flame.dart';
+import 'package:sample_flutter_game_with_flame/presentation/widget/game/flame_page.dart';
+import 'package:sample_flutter_game_with_flame/presentation/widget/game/reload_button.dart';
 
 class GamePage extends ConsumerWidget {
   @override
@@ -17,11 +18,7 @@ class GamePage extends ConsumerWidget {
         elevation: 0,
         foregroundColor: Colors.green,
         actions: [
-          TextButton(
-              onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute<void>(builder: (_) => GamePage()),
-                  (_) => false),
-              child: const Text("Reload")),
+          ReloadButton(),
         ],
       ),
       drawer: DrawerPage(),
