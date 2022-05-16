@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample_flutter_game_with_flame/presentation/page/drawer.dart';
-import 'package:sample_flutter_game_with_flame/presentation/page/game.dart';
 import 'package:sample_flutter_game_with_flame/presentation/widget/drawer/go_to_home_button.dart';
 
 class HomePage extends ConsumerWidget {
