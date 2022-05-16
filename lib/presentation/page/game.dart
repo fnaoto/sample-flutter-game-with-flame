@@ -3,7 +3,7 @@ import 'package:sample_flutter_game_with_flame/application/block_app_service.dar
 import 'package:sample_flutter_game_with_flame/presentation/notifier/block_notifier.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
 import 'package:sample_flutter_game_with_flame/presentation/page/drawer.dart';
-import 'package:sample_flutter_game_with_flame/presentation/page/flame.dart';
+import 'package:sample_flutter_game_with_flame/presentation/widget/game/flame_page.dart';
 
 class GamePage extends ConsumerWidget {
   @override
