@@ -5,6 +5,7 @@ import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/block_notifier.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
+import 'package:sample_flutter_game_with_flame/presentation/widget/game/intermediate_dialog.dart';
 import 'package:sample_flutter_game_with_flame/presentation/widget/game/square.dart';
 
 export 'package:flame/game.dart';
@@ -86,10 +87,12 @@ class FlamePage extends FlameGame with HasTappables {
     if (children.isEmpty) {
       _squares.clear();
       await createSquares;
+      InterMediateDialog();
     }
     if (_blockNotifier.isFailed) {
       _squares.clear();
       pauseEngine();
+      InterMediateDialog();
     } else {
       if (_blockNotifier.tappedBlockId != null) {
         _squares.removeWhere((s) => s.block.id == _blockNotifier.tappedBlockId);
