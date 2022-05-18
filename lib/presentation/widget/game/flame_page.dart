@@ -33,7 +33,7 @@ class FlamePage extends FlameGame with HasTappables {
     return _blockNotifier.blocks.firstWhere((b) => b.id == _id);
   }
 
-  Future<void> get _updateNeedToTapFlag async {
+  Future<void> get _updateFlagOfNeedToTap async {
     if (_squares.isNotEmpty) {
       _squares.sort((a, b) => a.point.compareTo(b.point));
       final _maxPointBlockIds = _squares
@@ -69,7 +69,7 @@ class FlamePage extends FlameGame with HasTappables {
         _squares.add(square);
       }
     }
-    await _updateNeedToTapFlag;
+    await _updateFlagOfNeedToTap;
     _squares.map((s) async => await add(s)).toList();
   }
 
@@ -93,7 +93,7 @@ class FlamePage extends FlameGame with HasTappables {
     } else {
       if (_blockNotifier.tappedBlockId != null) {
         _squares.removeWhere((s) => s.block.id == _blockNotifier.tappedBlockId);
-        await _updateNeedToTapFlag;
+        await _updateFlagOfNeedToTap;
       }
     }
   }
