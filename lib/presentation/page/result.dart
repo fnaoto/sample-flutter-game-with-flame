@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../widget/result/player_point_and_rank.dart';
 import '../widget/result/user_form.dart';
 import 'drawer.dart';
 
@@ -23,6 +24,7 @@ class ResultPage extends ConsumerWidget {
           padding: const EdgeInsets.all(30),
           children: <Widget>[
             const Icon(Icons.score, size: 200),
+            PlayerPointAndRank(),
             UserForm(),
           ],
         ),

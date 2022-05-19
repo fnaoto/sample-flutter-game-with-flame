@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
@@ -10,12 +8,14 @@ class UserForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final _formKey = GlobalKey<FormState>();
     final player = ref.watch(playerNotifier);
-    String _playerName = "Player-${DateTime.now().millisecondsSinceEpoch}";
+    String? _playerName = player.name;
+    String? _playerId = player.id;
 
     return Form(
       key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: ListView(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(10),
         children: <Widget>[
           TextFormField(
             initialValue: _playerName,
@@ -33,15 +33,18 @@ class UserForm extends ConsumerWidget {
           ElevatedButton(
             child: const Text('Submit and back to home'),
             onPressed: () {
-              if (_playerName.isEmpty) throw Exception("Name is empty");
-              player.createPlayer(
-                name: _playerName,
-                point: Random().nextInt(100),
-              );
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute<void>(builder: (_) => const HomePage()),
-                (_) => false,
-              );
+              if (_playerName != null && _playerId != null) {
+                player.updatePlayer(
+                  id: _playerId,
+                  name: _playerName!,
+                );
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute<void>(builder: (_) => const HomePage()),
+                  (_) => false,
+                );
+              } else {
+                throw Exception("Name or Id is empty");
+              }
             },
           ),
         ],
