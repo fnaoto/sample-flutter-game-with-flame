@@ -4,7 +4,7 @@ import 'package:sample_flutter_game_with_flame/presentation/page/players.dart';
 class GoToPlayersButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButton(
       onPressed: () => Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (_) => const PlayersPage(),

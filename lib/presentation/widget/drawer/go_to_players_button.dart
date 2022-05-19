@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sample_flutter_game_with_flame/presentation/page/players.dart';
 
-class GoToPlayerButton extends StatelessWidget {
+class GoToPlayersButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(

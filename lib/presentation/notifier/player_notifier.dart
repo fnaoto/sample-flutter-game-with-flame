@@ -35,6 +35,9 @@ class PlayerNotifier extends StateNotifier<List<PlayerDto>> {
 
   Future<void> get fetchPlayer async => await _updatePlayers();
 
+  String? id;
+  String? name;
+
   Future<PlayerDto> createPlayer({
     required String name,
     required int point,
@@ -52,12 +55,16 @@ class PlayerNotifier extends StateNotifier<List<PlayerDto>> {
     await _updatePlayers();
   }
 
-  Future<void> updatePlayer({required String id}) async {
+  Future<void> updatePlayer({
+    required String id,
+    required String name,
+  }) async {
     final _blocks = await _blockAppService.getPlayerBlocks(id);
     if (_blocks.isEmpty) return;
     final _playerPoints =
         _blocks.map((b) => b!.point).toList().fold<int>(0, (p, c) => p + c);
     await _playerAppService.updatePlayerPoint(id: id, point: _playerPoints);
+    await _playerAppService.updatePlayerName(id: id, name: name);
     await _updatePlayers();
   }
 

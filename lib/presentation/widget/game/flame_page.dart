@@ -11,17 +11,24 @@ import 'package:sample_flutter_game_with_flame/presentation/widget/game/square.d
 export 'package:flame/game.dart';
 
 class FlamePage extends FlameGame with HasTappables {
-  FlamePage(this._playerNotifier, this._blockNotifier);
+  FlamePage(
+    this._playerNotifier,
+    this._blockNotifier,
+    this._context,
+  );
 
   final List<Square> _squares = [];
   final PlayerNotifier _playerNotifier;
   final BlockNotifier _blockNotifier;
+  final BuildContext _context;
 
   late final PlayerDto player;
 
   Future<void> get createPlayer async {
     final date = DateTime.now();
     player = await _playerNotifier.createPlayer(name: "player $date", point: 0);
+    _playerNotifier.id = player.id;
+    _playerNotifier.name = player.name;
   }
 
   Future<BlockDto> createBlock(int point) async {
@@ -83,16 +90,16 @@ class FlamePage extends FlameGame with HasTappables {
   @override
   void onTapUp(int pointerId, TapUpInfo info) async {
     super.onTapUp(pointerId, info);
-    await _playerNotifier.updatePlayer(id: player.id);
+    await _playerNotifier.updatePlayer(id: player.id, name: player.name);
     if (children.isEmpty) {
       _squares.clear();
+      await showDialog(context: _context, builder: (_) => InterMediateDialog());
       await createSquares;
-      InterMediateDialog();
     }
     if (_blockNotifier.isFailed) {
       _squares.clear();
       pauseEngine();
-      InterMediateDialog();
+      await showDialog(context: _context, builder: (_) => InterMediateDialog());
     } else {
       if (_blockNotifier.tappedBlockId != null) {
         _squares.removeWhere((s) => s.block.id == _blockNotifier.tappedBlockId);

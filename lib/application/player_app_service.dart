@@ -82,6 +82,24 @@ class PlayerAppService {
     });
   }
 
+  Future<void> updatePlayerName({
+    required String id,
+    required String name,
+  }) async {
+    final targetId = PlayerId(id);
+    final targetName = PlayerName(name);
+
+    await _repository.transaction<void>(() async {
+      final target = await _repository.findById(targetId);
+      if (target == null) {
+        throw NotFoundException(code: ExceptionCode.player);
+      }
+
+      target.changeName(targetName);
+      await _repository.save(target);
+    });
+  }
+
   Future<PlayerDto?> getPlayer(String id) async {
     final targetId = PlayerId(id);
     final target = await _repository.findById(targetId);
