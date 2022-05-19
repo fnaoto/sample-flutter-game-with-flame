@@ -22,7 +22,7 @@ class GamePage extends ConsumerWidget {
         ],
       ),
       drawer: DrawerPage(),
-      body: GameWidget(game: FlamePage(player, block)),
+      body: GameWidget(game: FlamePage(player, block, context)),
     );
   }
 }

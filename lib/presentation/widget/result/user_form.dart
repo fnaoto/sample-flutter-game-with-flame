@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
-import 'package:sample_flutter_game_with_flame/presentation/page/result.dart';
+import 'package:sample_flutter_game_with_flame/presentation/page/players.dart';
 
 class UserForm extends ConsumerWidget {
   @override
@@ -39,7 +39,7 @@ class UserForm extends ConsumerWidget {
               );
               Navigator.of(context).push(
                 MaterialPageRoute<void>(
-                  builder: (_) => const ResultPage(),
+                  builder: (_) => const PlayersPage(),
                 ),
               );
             },
