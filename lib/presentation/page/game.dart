@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sample_flutter_game_with_flame/application/block_app_service.dart';
-import 'package:sample_flutter_game_with_flame/presentation/notifier/block_notifier.dart';
-import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
-import 'package:sample_flutter_game_with_flame/presentation/page/drawer.dart';
-import 'package:sample_flutter_game_with_flame/presentation/widget/game/flame_page.dart';
-import 'package:sample_flutter_game_with_flame/presentation/widget/game/reload_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../notifier/block_notifier.dart';
+import '../notifier/player_notifier.dart';
+import '../widget/game/flame_page.dart';
+import '../widget/game/reload_button.dart';
+import 'drawer.dart';
 
 class GamePage extends ConsumerWidget {
   @override

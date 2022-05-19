@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sample_flutter_game_with_flame/presentation/page/drawer.dart';
-import 'package:sample_flutter_game_with_flame/presentation/widget/home/go_to_game_button.dart';
+
+import '../widget/home/go_to_game_button.dart';
+import '../widget/home/go_to_players_button.dart';
+import 'drawer.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,6 +25,7 @@ class HomePage extends ConsumerWidget {
           children: <Widget>[
             const Icon(Icons.home, size: 200),
             GoToGameButton(),
+            GoToPlayersButton(),
           ],
         ),
       ),

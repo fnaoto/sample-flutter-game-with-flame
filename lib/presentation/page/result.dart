@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sample_flutter_game_with_flame/presentation/page/drawer.dart';
-import 'package:sample_flutter_game_with_flame/presentation/widget/result/go_to_home_button.dart';
-import 'package:sample_flutter_game_with_flame/presentation/widget/result/go_to_players_button.dart';
-import 'package:sample_flutter_game_with_flame/presentation/widget/result/user_form.dart';
+
+import '../widget/result/user_form.dart';
+import 'drawer.dart';
 
 class ResultPage extends ConsumerWidget {
   const ResultPage({Key? key}) : super(key: key);
