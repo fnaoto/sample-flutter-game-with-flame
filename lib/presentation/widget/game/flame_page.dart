@@ -5,6 +5,7 @@ import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/block_notifier.dart';
 import 'package:sample_flutter_game_with_flame/presentation/notifier/player_notifier.dart';
+import 'package:sample_flutter_game_with_flame/presentation/widget/game/intermediate_dialog.dart';
 import 'package:sample_flutter_game_with_flame/presentation/widget/game/square.dart';
 
 export 'package:flame/game.dart';
@@ -33,7 +34,7 @@ class FlamePage extends FlameGame with HasTappables {
     return _blockNotifier.blocks.firstWhere((b) => b.id == _id);
   }
 
-  Future<void> get _updateNeedToTapFlag async {
+  Future<void> get _updateFlagOfNeedToTap async {
     if (_squares.isNotEmpty) {
       _squares.sort((a, b) => a.point.compareTo(b.point));
       final _maxPointBlockIds = _squares
@@ -69,7 +70,7 @@ class FlamePage extends FlameGame with HasTappables {
         _squares.add(square);
       }
     }
-    await _updateNeedToTapFlag;
+    await _updateFlagOfNeedToTap;
     _squares.map((s) async => await add(s)).toList();
   }
 
@@ -86,14 +87,16 @@ class FlamePage extends FlameGame with HasTappables {
     if (children.isEmpty) {
       _squares.clear();
       await createSquares;
+      InterMediateDialog();
     }
     if (_blockNotifier.isFailed) {
       _squares.clear();
       pauseEngine();
+      InterMediateDialog();
     } else {
       if (_blockNotifier.tappedBlockId != null) {
         _squares.removeWhere((s) => s.block.id == _blockNotifier.tappedBlockId);
-        await _updateNeedToTapFlag;
+        await _updateFlagOfNeedToTap;
       }
     }
   }
