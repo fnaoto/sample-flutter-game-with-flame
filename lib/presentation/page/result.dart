@@ -25,8 +25,6 @@ class ResultPage extends ConsumerWidget {
           children: <Widget>[
             const Icon(Icons.score, size: 200),
             UserForm(),
-            GoToPlayersButton(),
-            GoToHomeButton()
           ],
         ),
       ),
